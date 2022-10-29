@@ -45,4 +45,43 @@ SELECT pg_reload_conf();
 
 ## postgresql.auto.conf
 
+Редактируется с помощью ALTER SYSTEM.
+Считывается после `postgresql.conf`. Всегда каталога PPGDATA.
+Перечитать конфиг-цию либо перестартовать сервер.
+Это SQL-интерфейс для редактирования конфигураций.
 
+```
+ALTER SYSTEM
+SET параметр TO значение;
+```
+
+```
+ALTER SYSTEM 
+RESET параметр;
+```
+
+```
+SELECT pg_read_file('postgresql.auto.conf') \g
+```
+
+Перечитать конфигурацию:
+
+```
+SELECT pg_reload_conf();
+```
+
+## В текущем сеансе
+
+Для параметров, отмеченных как user и superuser.
+
+`SET, set_config` - запись
+
+`SHOW <name>, current_setting(<name>)` - чтение
+
+До конца сеанса или транзакции.
+Установка параметров транзакционна.
+Допускаются польз-кие параметры (наличие точки внутри).
+
+```
+SELECT set_config('work_mem', '32MB', false);
+```
